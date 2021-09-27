@@ -1,10 +1,20 @@
+# Deobfuscators
+> [AgileDotNet deobfuscator/string decryptor](#agiledotnet-deobfuscator)
+> [Libraries i use](#libraries)
+
 # AgileDotNet deobfuscator
 
-## Sections
+## Features
 
-> ### Section 1
-> - [Section 1 is about how does the obfuscator](#section-1-section1)
-> ### Section 2
-> - Section 2 is about 
+> - String Decryption
 
-## Section 1
+## Planning on adding
+
+> - Delegate reconstructor
+> - DeVirtualization
+> - Class rebuilder
+> - goto remover
+
+## Libraries
+
+[dnlib](https://github.com/0xd4d/dnlib)
