@@ -7,4 +7,4 @@
 > ### Section 2
 > - Section 2 is about 
 
-## Section 1 {#section1}
+## Section 1
