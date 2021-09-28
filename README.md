@@ -1,5 +1,5 @@
 # Deobfuscators
-> - [AgileDotNet deobfuscator/string decryptor](#agiledotnet-deobfuscator)
+> - [AgileDotNet deobfuscator](#agiledotnet-deobfuscator)
 > - [Libraries i use](#libraries)
 
 # AgileDotNet deobfuscator
