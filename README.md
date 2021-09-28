@@ -20,3 +20,4 @@
 ## Libraries
 
 [dnlib](https://github.com/0xd4d/dnlib)
+[de4dot](https://github.com/de4dot/de4dot)
