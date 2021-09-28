@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30104.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgileDotNet", "AgileDotNet\AgileDotNet.csproj", "{98490C24-9CDA-4A48-9D4F-084A8DD3079B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98490C24-9CDA-4A48-9D4F-084A8DD3079B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98490C24-9CDA-4A48-9D4F-084A8DD3079B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98490C24-9CDA-4A48-9D4F-084A8DD3079B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98490C24-9CDA-4A48-9D4F-084A8DD3079B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E127E1A9-658C-470C-8BE3-DF490A4FBF13}
+	EndGlobalSection
+EndGlobal
