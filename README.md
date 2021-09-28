@@ -7,13 +7,15 @@
 ## Features
 
 > - String Decryption
+> - Delegate fixer
+> - Control Flow 
+> - Anti tamper fix
+> - Useless class remover
 
 ## Planning on adding
 
-> - Delegate reconstructor
 > - DeVirtualization
 > - Class rebuilder
-> - goto remover
 
 ## Libraries
 
