@@ -1,4 +1,5 @@
 ﻿using AgileDotNet.Features;
+using de4dot.blocks;
 using dnlib.DotNet;
 using dnlib.DotNet.Emit;
 using dnlib.DotNet.Writer;
@@ -6,9 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
+using AgileDotNet.Features.VM.Old;
 
 namespace AgileDotNet
 {
@@ -20,6 +24,7 @@ namespace AgileDotNet
         public bool ControlFlow;
         public bool DeVirtualize;
         public bool ClearClasses;
+        public bool MakeEditable;
     }
     public class Deobfuscator
     {
@@ -39,6 +44,57 @@ namespace AgileDotNet
             }
             return false;
         }
+        private Instruction[] Replace(int start,int end, IList<Instruction> instrs, Instruction[] replaceWith) { 
+            if((end-start) >= replaceWith.Length)
+            {
+                for(int i = start; i < end; i++)
+                {
+                    instrs[i].OpCode = replaceWith[i-start].OpCode;
+                    instrs[i].Operand = replaceWith[i-start].Operand;
+                    instrs[i].Offset = replaceWith[i-start].Offset;
+                }
+            }
+            else
+            {
+                List<Instruction> OtherInstructs = new List<Instruction>();
+
+                for(int i = end; i < instrs.Count; i++)
+                {
+                    OtherInstructs.Add(instrs[i]);
+                }
+
+                int overWritenInstrs = 0;
+
+                for(int i = start; i < end; i++)
+                {
+                    if ((end - i) < 0)
+                        overWritenInstrs++;
+
+                    Instruction inst = replaceWith[i - start];
+
+                    if ((i + 1) > instrs.Count)
+                        instrs.Add(inst);
+                    else
+                    {
+                        instrs[i].OpCode = inst.OpCode;
+                        instrs[i].Operand = inst.Operand;
+                        instrs[i].Offset = inst.Offset;
+                    }
+                }
+                for(int i = end; i < overWritenInstrs; i++)
+                {
+                    if ((i + 1) > instrs.Count)
+                        instrs.Add(OtherInstructs[i - end]);
+                    else
+                    {
+                        instrs[i + overWritenInstrs].OpCode = OtherInstructs[i - end].OpCode;
+                        instrs[i + overWritenInstrs].Operand = OtherInstructs[i - end].Operand;
+                    }
+                }
+            }
+
+            return instrs.ToArray();
+        }
 
         public Deobfuscator(DeobfuscatorSettings setting)
         {
@@ -49,11 +105,10 @@ namespace AgileDotNet
         {
             this.m_settings = settings;
         }
-        public void Deobfuscate(string file)
+        public void Deobfuscate(AssemblyDef AsmDef, string file = "", Assembly asm = null)
         {
-            AssemblyDef AsmDef = AssemblyDef.Load(file);
-
             string FinalMessage = "";
+            GLOBALS.CurrentFile = file;
 
             if (m_settings.DelegateFixer)
             {
@@ -97,13 +152,30 @@ namespace AgileDotNet
 
                 FinalMessage += "[+] Decrypted strings: " + DecryptedStrings + ";\n";
             }
+            if (m_settings.DeVirtualize && file.EndsWith(".dll"))
+            {
+                foreach(ModuleDef module in AsmDef.Modules)
+                {
+                    IContext context = new Context();
+                    context.SetData("Ops", new Dictionary<string, VmOpCodeHandlerDetector> { });
+
+                    DeVirt deVirt = new DeVirt(context, module);
+                    deVirt.Init(Assembly.LoadFrom(file));
+
+                    if (deVirt.Restore())
+                    {
+                        FinalMessage += $"[+] Restored CSVMs: {deVirt.RestoredMethods}\n";
+                    }
+                    else Utils.Error("DeVirtualized failed!");
+                }
+            }
             if (m_settings.ControlFlow)
             {
                 ControlFlow cf = new ControlFlow(AsmDef);
 
                 ControlFlow.ControlFlowInfo cfInfo = cf.DoControlFlow();
 
-                string message = "[+] ControlFlow : {\n  Fixed Arithmetics: "+cfInfo.FixedArithmetics+";\n  Cleared Control Flows: "+cfInfo.ClearedControlFlows+";\n  Total: "+cfInfo.TotalFixed+";\n}\n";
+                string message = "[+] ControlFlow : {\n  Fixed Arithmetics: " + cfInfo.FixedArithmetics + ";\n  Cleared Control Flows: " + cfInfo.ClearedControlFlows + ";\n  Total: " + cfInfo.TotalFixed + ";\n}\n";
 
                 FinalMessage += message;
             }
@@ -116,13 +188,17 @@ namespace AgileDotNet
                 List<TypeDef> types = AsmDef.Modules[0].GetTypes().ToList();
                 foreach (TypeDef type in types)
                 {
-                    if(type.Namespace == "" && !IsAllowed(type.Name))
+                    if (type.Namespace == "" && !IsAllowed(type.Name))
                     {
                         AsmDef.Modules[0].Types.Remove(type);
                     }
                 }
             }
-
+            if (m_settings.MakeEditable)
+            {
+                AsmEditor asmEditor = new AsmEditor(AsmDef, asm);
+                Utils.Debug<string, int>(asmEditor.FixNames());
+            }
 
 
             ModuleWriterOptions options = new ModuleWriterOptions(AsmDef.ManifestModule);
@@ -135,6 +211,15 @@ namespace AgileDotNet
             AsmDef.Write("deobfed" + "/" + DeFile);
 
             Utils.Info(FinalMessage);
+        }
+        public void Deobfuscate(string file)
+        {
+            AssemblyDef AsmDef = AssemblyDef.Load(file);
+            Assembly asm = Assembly.UnsafeLoadFrom(file);
+
+            Console.WriteLine(AsmDef.FullName);
+
+            Deobfuscate(AsmDef, file, asm);
         }
     }
 }

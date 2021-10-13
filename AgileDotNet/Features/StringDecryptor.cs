@@ -41,18 +41,27 @@ namespace AgileDotNet.Features
                 throw new Exception("Failed to find decryption key please esure that the version of the obfuscator is above 6.3");
             }
 
+            if (GLOBALS.CachedDecryptionKey != null)
+            {
+                this.DecryptionKey = GLOBALS.CachedDecryptionKey;
+                return;
+            }
+
             this.DecryptionKey = field.InitialValue; // Set's the decryption key to the one found in the assembly
 
-            if(this.DecryptionKey is null)
+            if (this.DecryptionKey is null)
             {
-                this.DecryptionKey = Assembly.LoadFrom(m_File).ManifestModule.ResolveField(field.MDToken.ToInt32()).GetValue(null) as byte[]; 
+                Assembly a = Assembly.UnsafeLoadFrom(m_File);
+
+                this.DecryptionKey = a.ManifestModule.ResolveField(field.MDToken.ToInt32()).GetValue(null) as byte[];
             }
+
+            GLOBALS.CachedDecryptionKey = this.DecryptionKey;
         }
 
         public StringDecryptor(AssemblyDef asm, string file)
         {
             this.m_File = file;
-
             foreach(ModuleDef module in asm.Modules)
             {
                 foreach(TypeDef @class in module.GetTypes())

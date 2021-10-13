@@ -29,7 +29,8 @@ namespace Deobfuscators
                 AntiTamper = AntiTamperFix.Checked,
                 ControlFlow = ControlFloxFix.Checked,
                 DeVirtualize = DeVirtualizeCheck.Checked,
-                ClearClasses = ClearClasses.Checked
+                ClearClasses = ClearClasses.Checked,
+                MakeEditable = MakeEditableCheck.Checked
             });
 
             string[] files = new string[AssemblieToDeobf.CheckedItems.Count];
@@ -66,7 +67,8 @@ namespace Deobfuscators
                 AntiTamper = true,
                 ControlFlow = true,
                 DeVirtualize = true,
-                ClearClasses = true
+                ClearClasses = true,
+                MakeEditable = true
             });
 
             refreshAssemblyListToolStripMenuItem_Click(sender, e);
@@ -120,6 +122,26 @@ namespace Deobfuscators
             File.Delete(AssemblieToDeobf.SelectedItem.ToString());
 
             refreshAssemblyListToolStripMenuItem_Click(sender, e);
+        }
+
+        private void DeVirtualizeCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (DeVirtualizeCheck.Checked)
+            {
+                StringDecryption.Checked = true;
+                StringDecryption.Enabled = false;
+                StringDecryption.CheckState = CheckState.Indeterminate;
+            }
+            else
+            {
+                StringDecryption.Enabled = true;
+                StringDecryption.CheckState = CheckState.Checked;
+            }
+        }
+
+        private void MakeEditableCheck_CheckedChanged(object sender, EventArgs e) // wanted to add a feature
+        {
+
         }
     }
 }

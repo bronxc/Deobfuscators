@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.OptionsBox = new System.Windows.Forms.GroupBox();
+            this.ClearClasses = new System.Windows.Forms.CheckBox();
             this.DeVirtualizeCheck = new System.Windows.Forms.CheckBox();
             this.ControlFloxFix = new System.Windows.Forms.CheckBox();
             this.AntiTamperFix = new System.Windows.Forms.CheckBox();
@@ -43,13 +44,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.DeobfBtn = new System.Windows.Forms.Button();
             this.OpenDialog = new System.Windows.Forms.OpenFileDialog();
-            this.ClearClasses = new System.Windows.Forms.CheckBox();
+            this.MakeEditableCheck = new System.Windows.Forms.CheckBox();
             this.OptionsBox.SuspendLayout();
             this.AssemblyStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // OptionsBox
             // 
+            this.OptionsBox.Controls.Add(this.MakeEditableCheck);
             this.OptionsBox.Controls.Add(this.ClearClasses);
             this.OptionsBox.Controls.Add(this.DeVirtualizeCheck);
             this.OptionsBox.Controls.Add(this.ControlFloxFix);
@@ -63,11 +65,22 @@
             this.OptionsBox.TabStop = false;
             this.OptionsBox.Text = "Options";
             // 
+            // ClearClasses
+            // 
+            this.ClearClasses.AutoSize = true;
+            this.ClearClasses.Checked = true;
+            this.ClearClasses.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ClearClasses.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.ClearClasses.Location = new System.Drawing.Point(120, 64);
+            this.ClearClasses.Name = "ClearClasses";
+            this.ClearClasses.Size = new System.Drawing.Size(125, 24);
+            this.ClearClasses.TabIndex = 5;
+            this.ClearClasses.Text = "Clear Classes";
+            this.ClearClasses.UseVisualStyleBackColor = true;
+            // 
             // DeVirtualizeCheck
             // 
             this.DeVirtualizeCheck.AutoSize = true;
-            this.DeVirtualizeCheck.Checked = true;
-            this.DeVirtualizeCheck.CheckState = System.Windows.Forms.CheckState.Checked;
             this.DeVirtualizeCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.DeVirtualizeCheck.Location = new System.Drawing.Point(4, 64);
             this.DeVirtualizeCheck.Name = "DeVirtualizeCheck";
@@ -75,6 +88,7 @@
             this.DeVirtualizeCheck.TabIndex = 4;
             this.DeVirtualizeCheck.Text = "De Virtualize";
             this.DeVirtualizeCheck.UseVisualStyleBackColor = true;
+            this.DeVirtualizeCheck.CheckedChanged += new System.EventHandler(this.DeVirtualizeCheck_CheckedChanged);
             // 
             // ControlFloxFix
             // 
@@ -188,18 +202,19 @@
             this.DeobfBtn.UseVisualStyleBackColor = true;
             this.DeobfBtn.Click += new System.EventHandler(this.DeobfBtn_Click);
             // 
-            // ClearClasses
+            // MakeEditableCheck
             // 
-            this.ClearClasses.AutoSize = true;
-            this.ClearClasses.Checked = true;
-            this.ClearClasses.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ClearClasses.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ClearClasses.Location = new System.Drawing.Point(120, 64);
-            this.ClearClasses.Name = "ClearClasses";
-            this.ClearClasses.Size = new System.Drawing.Size(125, 24);
-            this.ClearClasses.TabIndex = 5;
-            this.ClearClasses.Text = "Clear Classes";
-            this.ClearClasses.UseVisualStyleBackColor = true;
+            this.MakeEditableCheck.AutoSize = true;
+            this.MakeEditableCheck.Checked = true;
+            this.MakeEditableCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.MakeEditableCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.MakeEditableCheck.Location = new System.Drawing.Point(4, 86);
+            this.MakeEditableCheck.Name = "MakeEditableCheck";
+            this.MakeEditableCheck.Size = new System.Drawing.Size(194, 24);
+            this.MakeEditableCheck.TabIndex = 6;
+            this.MakeEditableCheck.Text = "Make Editable /w dnspy";
+            this.MakeEditableCheck.UseVisualStyleBackColor = true;
+            this.MakeEditableCheck.CheckedChanged += new System.EventHandler(this.MakeEditableCheck_CheckedChanged);
             // 
             // Form1
             // 
@@ -212,7 +227,7 @@
             this.Controls.Add(this.OptionsBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Deobfuscator";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.OptionsBox.ResumeLayout(false);
             this.OptionsBox.PerformLayout();
@@ -239,6 +254,7 @@
         private System.Windows.Forms.CheckBox PatchDelegates;
         private System.Windows.Forms.ToolStripMenuItem removeAssemblyToolStripMenuItem;
         private System.Windows.Forms.CheckBox ClearClasses;
+        private System.Windows.Forms.CheckBox MakeEditableCheck;
     }
 }
 
