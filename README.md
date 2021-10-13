@@ -2,6 +2,10 @@
 > - [AgileDotNet deobfuscator](#agiledotnet-deobfuscator)
 > - [Libraries i use](#libraries)
 
+# Notice
+
+These/This obfuscator/s are not meant to be safe for malware so if used be carefull
+
 # AgileDotNet deobfuscator
 
 ## Features
