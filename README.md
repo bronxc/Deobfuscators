@@ -11,11 +11,11 @@
 > - Control Flow 
 > - Anti tamper fix
 > - Useless class remover
+> - Symbol Remover
 
 ## Planning on adding
 
 > - DeVirtualization
-> - Class rebuilder
 
 ## Libraries
 
